@@ -1,0 +1,27 @@
+name: Run AKS Cluster Script
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Name for the resource group and AKS cluster'
+        required: false
+      location:
+        description: 'Location for the resource group and AKS cluster'
+        required: true
+
+jobs:
+  create-aks-cluster:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Azure CLI
+      uses: azure/CLI@v1
+
+    - name: Run AKS Cluster Script
+      run: |
+        chmod +x ./create-aks-cluster.sh
+        ./create-aks-cluster.sh ${{ github.event.inputs.name }} ${{ github.event.inputs.name }} ${{ github.event.inputs.location }}
